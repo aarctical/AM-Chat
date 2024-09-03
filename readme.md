@@ -12,7 +12,7 @@ This chat resource is a standalone project I worked on a while ago, it incorpora
 
 
 
-## LUA MenuAPI Credits
+## Credits
 
  - CFX forum posts for player referencing functionality ([Between entity coords](https://forum.cfx.re/t/proximity-based-me-script/148167/2))
 
