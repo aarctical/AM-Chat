@@ -1,3 +1,5 @@
+(This resource has not been tested properly)
+
 ![chat banner](https://i.imgur.com/UBOoup0.png)
 
 
