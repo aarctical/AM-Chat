@@ -14,12 +14,16 @@ Citizen.CreateThread(function()
     TriggerEvent('chat:addSuggestion', '/local', 'Characters', {
         {name="message",help="Send a local OOC message"}
     })
+    if Config.EnableStaffchat then
     TriggerEvent('chat:addSuggestion', '/sc', 'Administration', {
         {name="message",help="Send a message in Staff Chat"}
     })
+    end
+    if Config.EnableReporting then
     TriggerEvent('chat:addSuggestion', '/report', 'Administration', {
         {name="report",help="Sends your report to an Administrator"}
     })
+    end
     TriggerEvent('chat:addSuggestion', '/coords', 'Shows your current coordinates.')
 end)
 

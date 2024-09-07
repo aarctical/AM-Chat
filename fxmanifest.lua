@@ -1,6 +1,6 @@
 fx_version 'cerulean'
 game 'gta5'
-lua_54 'yes'
+lua54 'yes'
 
 author 'Arctical'
 description 'Lightweight chat resource by Arctical'

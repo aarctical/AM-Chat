@@ -1,5 +1,3 @@
-(This resource has not been tested properly)
-
 ![chat banner](https://i.imgur.com/UBOoup0.png)
 
 
@@ -29,6 +27,15 @@ This chat resource is a standalone project I worked on a while ago, it incorpora
 | EnableStaffChat | Staff chat + its setting |
 | EnableReporting | Reporting System + its settings |
 
+## Features
+
+A variery of Roleplay commands:
+- Me (Local/Global)
+- Do (Local/Global)
+- Chat (Local/Global)
+- Player Reports
+- Staff Chat
+- Coordinates location
 
 ## FAQ
 
@@ -50,6 +57,7 @@ No, in pursuance with the AGPL License, you may edit and redistribute for free (
 - (2) - Drag & Drop the 'AM-Chat' folder into your resources folder
 - (3) - Copy the 'sv_chat.lua' file from /dependency and replace it into \[gameplay]/chat/sv_chat.lua
 - (4) - Write 'ensure AM-Chat' in your server.cfg file
+- (5) - Configure the 'config.lua' file with everything you wish to have included in the script
 
 #### I have an issue, it isn't working?
 

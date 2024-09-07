@@ -21,7 +21,8 @@ end)
 
 RegisterCommand('me', function(source, args, user)
     if source == 0 then return end
-    if tostring(string.len(table.concat(args, " "))) < 1 then return end
+    local text = table.concat(args, " ")
+    if string.len(text) == 0 then return end
     TriggerClientEvent("am-chat:me", -1, source, GetPlayerName(source), table.concat(args, " "))
     if not Config.EnableDiscordLogging then return end
     message = "`[ME] "..GetPlayerName(source).." (#"..source.."): "..table.concat(args, " ").."`"
@@ -30,7 +31,8 @@ end,false)
 
 RegisterCommand('do', function(source, args, user)
     if source == 0 then return end
-    if tostring(string.len(table.concat(args, " "))) < 1 then return end
+    local text = table.concat(args, " ")
+    if string.len(text) == 0 then return end
     TriggerClientEvent("am-chat:do", -1, source, GetPlayerName(source), table.concat(args, " "))
     if not Config.EnableDiscordLogging then return end
     message = "`[DO] "..GetPlayerName(source).." (#"..source.."): "..table.concat(args, " ").."`"
@@ -39,7 +41,8 @@ end,false)
 
 RegisterCommand('local', function(source, args, user)
     if source == 0 then return end
-    if tostring(string.len(table.concat(args, " "))) < 1 then return end
+    local text = table.concat(args, " ")
+    if string.len(text) == 0 then return end
     TriggerClientEvent("am-chat:local", -1, source, GetPlayerName(source), table.concat(args, " "))
     if not Config.EnableDiscordLogging then return end
     message = "`[LOCAL] "..GetPlayerName(source).." (#"..source.."): "..table.concat(args, " ").."`"
@@ -48,7 +51,8 @@ end,false)
 
 RegisterCommand('gme', function(source, args)
     if source == 0 then return end
-    if tostring(string.len(table.concat(args, " "))) < 1 then return end
+    local text = table.concat(args, " ")
+    if string.len(text) == 0 then return end
     TriggerClientEvent('chat:addMessage', -1, {
         color = nil,
         args = {"^2*", "^2"..GetPlayerName(source).." "..table.concat(args, " ")}
@@ -59,7 +63,8 @@ RegisterCommand('gme', function(source, args)
 end)
 RegisterCommand('gdo', function(source, args)
     if source == 0 then return end
-    if tostring(string.len(table.concat(args, " "))) < 1 then return end
+    local text = table.concat(args, " ")
+    if string.len(text) == 0 then return end
     TriggerClientEvent('chat:addMessage', -1, {
         color = nil,
         args = {"^3*", "^3"..GetPlayerName(source).." "..table.concat(args, " ")}
@@ -71,7 +76,8 @@ end)
 if Config.EnableStaffchat then
     RegisterCommand('sc', function(source, args)
         if source == 0 then return end
-        if tostring(string.len(table.concat(args, " "))) < 1 then return end
+        local text = table.concat(args, " ")
+        if string.len(text) == 0 then return end
         if not IsPlayerAceAllowed(source, Config.Staffchat_Ace_Permission) then
             TriggerClientEvent('chat:addMessage', source, {
                 color = {255,0,0},
@@ -99,7 +105,8 @@ end
 if Config.EnableReporting then
     RegisterCommand('report', function(source, args)
         if source == 0 then return end
-        if tostring(string.len(table.concat(args, " "))) < 1 then return end
+        local text = table.concat(args, " ")
+        if string.len(text) == 0 then return end
         staff_ids = {}
         for _, playerId in ipairs(GetPlayers()) do
             if IsPlayerAceAllowed(playerId, Config.Reports_Ace_Permission) then
@@ -122,10 +129,11 @@ if Config.EnableReporting then
         PerformHttpRequest(Config.DiscordWebhook, function(err, text, headers) end, 'POST', json.encode({username = Config.Resource, content = message}), { ['Content-Type'] = 'application/json' })
     end)
 end
+
+
 AddEventHandler('chatMessage', function(source, author, text)
-    if source == 0 then return end
-    if tostring(string.len(table.concat(text, " "))) < 1 then return end
-    if string.sub(text, 1, string.len("/")) ~= "/" then
+    if source == 0 then return; end
+    if string.sub(text, 1, string.len("/")) ~= "/" and string.len(text) ~= 0 then
         TriggerClientEvent('chat:addMessage', -1, {
             color = {97, 99, 95},
             args = {"[OOC]", "^7"..GetPlayerName(source).." [#"..source.."]: "..text}
@@ -141,19 +149,23 @@ AddEventHandler('chatMessage', function(source, author, text)
     end
 end)
 
-AddEventHandler('playerJoining', function() 
-    TriggerClientEvent('chatMessage', -1, "", {255,0,0}, "^5^*"..GetPlayerName(source).." has joined the server.")
-    if not Config.EnableDiscordLogging then return end
-    message = "`[JOIN] "..GetPlayerName(source).." (#"..source..") left the server ("..reason..")`"
-    PerformHttpRequest(Config.DiscordWebhook, function(err, text, headers) end, 'POST', json.encode({username = Config.Resource, content = message}), { ['Content-Type'] = 'application/json' })
-end)
+if Config.EnableJoinLeaveMessages then
+    AddEventHandler('playerJoining', function()
+        consoleLog("Join", GetPlayerName(source).." has joined the server.")
+        TriggerClientEvent('chatMessage', -1, "", {255,0,0}, "^5^*"..GetPlayerName(source).." has joined the server.")
+        if not Config.EnableDiscordLogging then return end
+        message = "`[JOIN] "..GetPlayerName(source).." (#"..source..") is joining the server`"
+        PerformHttpRequest(Config.DiscordWebhook, function(err, text, headers) end, 'POST', json.encode({username = Config.Resource, content = message}), { ['Content-Type'] = 'application/json' })
+    end)
 
-AddEventHandler('playerDropped', function(reason) 
-    TriggerClientEvent('chatMessage', -1, "", {255,0,0}, "^5^*"..GetPlayerName(source).." has left the server ("..reason..")")
-    if not Config.EnableDiscordLogging then return end
-    message = "`[LEAVE] "..GetPlayerName(source).." (#"..source..") left the server ("..reason..")`"
-    PerformHttpRequest(Config.DiscordWebhook, function(err, text, headers) end, 'POST', json.encode({username = Config.Resource, content = message}), { ['Content-Type'] = 'application/json' })
-end)
+    AddEventHandler('playerDropped', function(reason) 
+        consoleLog("Leave", GetPlayerName(source).." has left the server.")
+        TriggerClientEvent('chatMessage', -1, "", {255,0,0}, "^5^*"..GetPlayerName(source).." has left the server ("..reason..")")
+        if not Config.EnableDiscordLogging then return end
+        message = "`[LEAVE] "..GetPlayerName(source).." (#"..source..") left the server ("..reason..")`"
+        PerformHttpRequest(Config.DiscordWebhook, function(err, text, headers) end, 'POST', json.encode({username = Config.Resource, content = message}), { ['Content-Type'] = 'application/json' })
+    end)
+end
 
 RegisterCommand('coords', function(source)
     if source == 0 then return end
