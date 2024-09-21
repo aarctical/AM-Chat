@@ -56,6 +56,7 @@ No, in pursuance with the AGPL License, you may edit and redistribute for free (
 - (1) - Extract the resource
 - (2) - Drag & Drop the 'AM-Chat' folder into your resources folder
 - (3) - Copy the 'sv_chat.lua' file from /dependency and replace it into \[gameplay]/chat/sv_chat.lua
+- (3) - If you are using artefact 7290 you need to replace '7290_sv_chat.lua' in citizen -> system_resources (And rename it to 'sv_chat.lua') as this chat file is different to older artefacts
 - (4) - Write 'ensure AM-Chat' in your server.cfg file
 - (5) - Configure the 'config.lua' file with everything you wish to have included in the script
 
